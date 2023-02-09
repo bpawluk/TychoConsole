@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using Tycho;
 using Tycho.Contract;
@@ -26,7 +27,7 @@ public class InventoryModule : TychoModule
 
     protected override void IncludeSubmodules(ISubstructureDefinition submodules, IServiceProvider services) { }
 
-    protected override void RegisterServices(IServiceCollection services)
+    protected override void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IStockLevelsRepository, StockLevelsRepository>();
     }

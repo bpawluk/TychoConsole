@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using Tycho;
@@ -46,5 +47,5 @@ public sealed class AppModule : TychoModule
         });
     }
 
-    protected override void RegisterServices(IServiceCollection services) { }
+    protected override void RegisterServices(IServiceCollection services, IConfiguration configuration) { }
 }
