@@ -1,10 +1,10 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Tycho.Modules;
-using TychoConsole.Catalog.Contract.Entities;
+using Tycho.Persistence.EFCore;
 using TychoConsole.Catalog.Contract.Incoming.Events;
 using TychoConsole.Catalog.Contract.Incoming.Requests;
-using TychoConsole.Catalog.Core.Abstraction;
 using TychoConsole.Catalog.Messaging.Handlers;
 using TychoConsole.Catalog.Persistence;
 
@@ -14,20 +14,26 @@ public class CatalogModule : TychoModule
 {
     protected override void DefineContract(IModuleContract module)
     {
-        module.Handles<FindProduct, Product, FindProductHandler>()
-              .Handles<GetProducts, IImmutableList<Product>, GetProductsHandler>();
+        module.Handles<FindProduct, FindProduct.Response, FindProductHandler>()
+              .Handles<GetProducts, GetProducts.Response, GetProductsHandler>();
     }
 
-    protected override void IncludeModules(IModuleStructure module) { }
-
-    protected override void MapEvents(IModuleEvents module)
+    protected override void DefineEvents(IModuleEvents module)
     {
         module.Handles<PriceChanged, PriceChangedHandler>()
               .Handles<StockLevelChanged, StockLevelChangedHandler>();
     }
 
+    protected override void IncludeModules(IModuleStructure module) { }
+
     protected override void RegisterServices(IServiceCollection module)
     {
-        module.AddSingleton<IProductsRepository, ProductsRepository>();
+        module.AddTychoPersistence<CatalogDbContext>();
+    }
+
+    protected override async Task Startup(IServiceProvider app)
+    {
+        using var context = app.GetRequiredService<CatalogDbContext>();
+        await context.InitDatabase();
     }
 }

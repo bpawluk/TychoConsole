@@ -1,7 +1,0 @@
-﻿namespace TychoConsole.Pricing.Core.Abstractions;
-
-internal interface IPricesRepository
-{
-    decimal GetPriceByProductId(string productId);
-    void SetPrice(string productId, decimal price);
-}

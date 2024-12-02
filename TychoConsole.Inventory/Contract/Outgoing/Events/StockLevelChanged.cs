@@ -2,4 +2,4 @@
 
 namespace TychoConsole.Inventory.Contract.Outgoing.Events;
 
-public record StockLevelChanged(string ProductId, int PreviousLevel, int CurrentLevel) : IEvent;
+public record StockLevelChanged(int ItemId, int NewStockLevel) : IEvent;

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Tycho.Requests;
 using Tycho.Structure;
@@ -12,12 +13,12 @@ internal class BuyProductHandler(IModule<InventoryModule> inventoryModule) : IRe
 {
     private readonly IModule<InventoryModule> _inventoryModule = inventoryModule;
 
-    public Task Handle(BuyProduct requestData, CancellationToken cancellationToken)
+    public async Task Handle(BuyProduct requestData, CancellationToken cancellationToken)
     {
-        return _inventoryModule.Execute(
-            new ReserveProduct(
-                requestData.ProductId,
-                requestData.Amount),
+        Console.WriteLine("> StoreApp.BuyProductHandler processing started");
+        await _inventoryModule.Execute(
+            new ReserveItem(requestData.ProductId, requestData.Amount),
             cancellationToken);
+        Console.WriteLine("> StoreApp.BuyProductHandler processing finished");
     }
 }

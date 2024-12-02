@@ -2,4 +2,4 @@
 
 namespace TychoConsole.Inventory.Contract.Incoming.Requests;
 
-public record ReserveProduct(string ProductId, int Amount) : IRequest;
+public record ReserveItem(int ItemId, int Amount) : IRequest;

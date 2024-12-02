@@ -2,4 +2,4 @@
 
 namespace TychoConsole.Pricing.Contract.Outgoing.Events;
 
-public record PriceChanged(string ProductId, decimal OldPrice, decimal NewPrice) : IEvent;
+public record PriceChanged(int ProductId, decimal NewPrice) : IEvent;

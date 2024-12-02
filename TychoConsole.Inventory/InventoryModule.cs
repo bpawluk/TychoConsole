@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Threading.Tasks;
+using System;
+using Microsoft.Extensions.DependencyInjection;
 using Tycho.Modules;
+using Tycho.Persistence.EFCore;
 using TychoConsole.Inventory.Contract.Incoming.Requests;
 using TychoConsole.Inventory.Contract.Outgoing.Events;
-using TychoConsole.Inventory.Core.Abstraction;
 using TychoConsole.Inventory.Messaging.Handlers;
 using TychoConsole.Inventory.Persistence;
 
@@ -12,19 +14,25 @@ public class InventoryModule : TychoModule
 {
     protected override void DefineContract(IModuleContract module)
     {
-        module.Handles<ReserveProduct, ReserveProductHandler>();
+        module.Handles<ReserveItem, ReserveItemHandler>();
     }
 
-    protected override void IncludeModules(IModuleStructure module) { }
-
-    protected override void MapEvents(IModuleEvents module)
+    protected override void DefineEvents(IModuleEvents module)
     {
         module.Routes<StockLevelChanged>()
               .Exposes();
     }
 
+    protected override void IncludeModules(IModuleStructure module) { }
+
     protected override void RegisterServices(IServiceCollection module)
     {
-        module.AddSingleton<IStockLevelsRepository, StockLevelsRepository>();
+        module.AddTychoPersistence<InventoryDbContext>();
+    }
+
+    protected override async Task Startup(IServiceProvider app)
+    {
+        using var context = app.GetRequiredService<InventoryDbContext>();
+        await context.InitDatabase();
     }
 }

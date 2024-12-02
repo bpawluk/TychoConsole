@@ -9,16 +9,16 @@ internal class EventMapper
 {
     public static CatalogIn.PriceChanged MapToCatalog(PricingOut.PriceChanged eventData)
     {
-        return new(eventData.ProductId, eventData.OldPrice, eventData.NewPrice);
+        return new(eventData.ProductId, eventData.NewPrice);
     }
 
     public static CatalogIn.StockLevelChanged MapToCatalog(InventoryOut.StockLevelChanged eventData)
     {
-        return new(eventData.ProductId, eventData.PreviousLevel, eventData.CurrentLevel);
+        return new(eventData.ItemId, eventData.NewStockLevel);
     }
 
     public static PricingIn.StockLevelChanged MapToPricing(InventoryOut.StockLevelChanged eventData)
     {
-        return new(eventData.ProductId, eventData.PreviousLevel, eventData.CurrentLevel);
+        return new(eventData.ItemId, eventData.NewStockLevel);
     }
 }
