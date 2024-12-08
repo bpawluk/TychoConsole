@@ -16,9 +16,12 @@ internal class BuyProductHandler(IModule<InventoryModule> inventoryModule) : IRe
     public async Task Handle(BuyProduct requestData, CancellationToken cancellationToken)
     {
         Console.WriteLine("> StoreApp.BuyProductHandler processing started");
+
         await _inventoryModule.Execute(
             new ReserveItem(requestData.ProductId, requestData.Amount),
             cancellationToken);
+        // other logic skipped for brevity
+
         Console.WriteLine("> StoreApp.BuyProductHandler processing finished");
     }
 }
